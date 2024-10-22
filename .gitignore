@@ -1,0 +1,10 @@
+ignore
+ignore*
+**/__pycache__/
+**/docker-compose.yaml
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
