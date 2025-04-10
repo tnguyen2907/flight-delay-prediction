@@ -1,0 +1,31 @@
+services:
+  mlflow:
+    build: .
+    container_name: mlflow
+    hostname: mlflow
+    user: "1001:0"
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=http://localhost:5000
+      - GOOGLE_APPLICATION_CREDENTIALS=/opt/credentials/application_default_credentials.json
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/opt/credentials/application_default_credentials.json
+      - ./mlruns:/mlruns
+    entrypoint: ["/bin/bash", "-c"]
+    command: 
+      - |
+        echo "Set up MLflow Tracking Server"
+        mlflow server --host 0.0.0.0 --port 5000 --default-artifact-root /mlruns --backend-store-uri file:/mlruns &
+        sleep 10
+
+        echo "Set up MLflow Model Serving"
+        mlflow models serve -m ${MODEL_URL} --host 0.0.0.0 -p 5001
+    networks:
+      - flight-delay-pred-network
+    restart: always
+networks:
+  flight-delay-pred-network:
+    external: true

@@ -1,0 +1,125 @@
+from airflow import DAG
+# task grouping
+from airflow.utils.task_group import TaskGroup
+from airflow.operators.python_operator import PythonOperator
+from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
+from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+
+from datetime import datetime, timedelta 
+import os
+import pandas as pd
+import json
+
+from utils import load_sql, upload_to_gcs_op
+
+default_args = {
+    'owner': 'airflow',
+    'retries': 2,
+    'retry_delay': timedelta(minutes=5),
+}
+
+with DAG(
+    dag_id='load_bq_dag',
+    description='Load data into BigQuery',
+    default_args=default_args,
+    schedule_interval=None,
+    start_date=datetime(2024, 10, 10),
+    catchup=False,
+    params={
+        'gcp_project_id': os.environ['GCP_PROJECT_ID'],
+    }
+) as dag:
+    load_dashboard_sql = load_sql('/opt/airflow/sql/init_dashboard.sql')
+
+    task_load_dashboard_data = BigQueryInsertJobOperator(
+        task_id='bq_load_dashboard_data',
+        gcp_conn_id='google_cloud',
+        configuration={
+            'query': {
+                'query': load_dashboard_sql,
+                'destinationTable': {
+                    'projectId': os.environ['GCP_PROJECT_ID'],
+                    'datasetId': 'flight_delay_pred_dataset',
+                    'tableId': 'dashboard',
+                },
+                'writeDisposition': 'WRITE_EMPTY',
+                'useLegacySql': False,
+            }
+        },
+    )
+
+    def fetch_agg_data():
+        bq_hook = BigQueryHook(bigquery_conn_id='google_cloud', use_legacy_sql=False, location='us-east1')
+
+        total_agg_sql = load_sql('/opt/airflow/sql/total_agg.sql').format(gcp_project_id=os.environ['GCP_PROJECT_ID'])
+        min_flight_date, max_flight_date, total_flights, total_delayed_flights, total_delayed_minutes, total_carrier_delay_minutes, total_weather_delay_minutes, total_nas_delay_minutes, total_security_delay_minutes, total_late_aircraft_delay_minutes, avg_departure_delayed_minutes = bq_hook.get_records(sql=total_agg_sql)[0]
+
+
+        pre_agged_data = {
+            "DelayType": ["Carrier", "Weather", "National Airspace System", "Security", "Late Aircraft"],
+            "DelayTypeMinutes": [total_carrier_delay_minutes, total_weather_delay_minutes, total_nas_delay_minutes, total_security_delay_minutes, total_late_aircraft_delay_minutes],
+            "MinFlightDate": [min_flight_date] * 5,
+            "MaxFlightDate": [max_flight_date] * 5,
+            "TotalFlights": [total_flights] * 5,
+            "TotalDelayedFlights": [total_delayed_flights] * 5,
+            "TotalDelayedMinutes": [total_delayed_minutes] * 5,
+            "AvgDepartureDelayedMinutes": [avg_departure_delayed_minutes] * 5,
+        }
+
+        df = pd.DataFrame(pre_agged_data)
+        df.to_csv("/opt/airflow/data/dashboard/pre_agged_data.csv", index=False)
+
+
+    task_fetch_agg_data = PythonOperator(
+        task_id='bq_fetch_agg_data',
+        python_callable=fetch_agg_data,
+    )
+
+    task_upload_to_gcs = upload_to_gcs_op('pre_agged_data', 'flight-delay-pred-data', '/opt/airflow/data/dashboard/pre_agged_data.csv', 'dashboard/pre_agged_data.csv')
+
+    def get_distinct():
+        bq_hook = BigQueryHook(bigquery_conn_id='google_cloud', use_legacy_sql=False, location='us-east1')
+
+        distinct_sql = "SELECT DISTINCT {} FROM `{}.flight_delay_pred_dataset.dashboard` ORDER BY {}"
+        cols = ["AirlineName", "OriginAirport", "DestinationAirport"]
+
+        for col in cols:
+            sql = distinct_sql.format(col, os.environ['GCP_PROJECT_ID'], col)
+            data = bq_hook.get_records(sql=sql)
+            # Save data to txt, create dir if not exists
+            os.makedirs("/opt/airflow/data/app", exist_ok=True)
+            with open(f"/opt/airflow/data/app/{col}.txt", "w") as f:
+                for row in data:
+                    f.write(f"{row[0]}\n")
+
+    task_get_distinct = PythonOperator(
+        task_id='bq_get_distinct',
+        python_callable=get_distinct,
+    )
+    
+    with TaskGroup('upload_app_data_to_gcs') as upload_app_data_to_gcs:
+        task_upload_airline_data = upload_to_gcs_op('airline_data', 'flight-delay-pred-data', '/opt/airflow/data/app/AirlineName.txt', 'app/AirlineName.txt')
+        task_upload_origin_data = upload_to_gcs_op('origin_data', 'flight-delay-pred-data', '/opt/airflow/data/app/OriginAirport.txt', 'app/OriginAirport.txt')
+        task_upload_destination_data = upload_to_gcs_op('destination_data', 'flight-delay-pred-data', '/opt/airflow/data/app/DestinationAirport.txt', 'app/DestinationAirport.txt')        
+            
+    def get_airport_to_state_mapping():
+        bq_hook = BigQueryHook(bigquery_conn_id='google_cloud', use_legacy_sql=False, location='us-east1')
+
+        airport_to_state_sql = f"SELECT DISTINCT OriginAirport, OriginState FROM `{os.environ['GCP_PROJECT_ID']}.flight_delay_pred_dataset.dashboard` ORDER BY OriginAirport"
+        data = bq_hook.get_records(sql=airport_to_state_sql)
+        # Save as json
+        airport_to_state = {row[0]: row[1] for row in data}
+        with open("/opt/airflow/data/app/airport_to_state.json", "w") as f:
+            json.dump(airport_to_state, f)
+            
+    task_get_airport_to_state_mapping = PythonOperator(
+        task_id='bq_get_airport_to_state_mapping',
+        python_callable=get_airport_to_state_mapping,
+    )
+    
+    task_upload_airport_to_state_mapping = upload_to_gcs_op('airport_to_state_mapping', 'flight-delay-pred-data', '/opt/airflow/data/app/airport_to_state.json', 'app/airport_to_state.json')
+
+    task_load_dashboard_data >> [task_fetch_agg_data, task_get_distinct, task_get_airport_to_state_mapping]
+    task_get_airport_to_state_mapping >> task_upload_airport_to_state_mapping
+    task_get_distinct >> upload_app_data_to_gcs
+    task_fetch_agg_data >> task_upload_to_gcs

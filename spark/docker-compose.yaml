@@ -1,0 +1,39 @@
+services:
+  spark-master:
+    # image: bitnami/spark:3.5.1
+    build: .
+    hostname: spark-master
+    ports:
+      - "8090:8080"
+      - "7077:7077"
+    environment:
+      - SPARK_MODE=master
+      - GOOGLE_APPLICATION_CREDENTIALS=/opt/credentials/application_default_credentials.json
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/opt/credentials/application_default_credentials.json
+    extra_hosts:
+      - "host.docker.internal:${HOST_IP}"
+    networks:
+      - flight-delay-pred-network
+    restart: always
+  spark-worker:
+    # image: bitnami/spark:3.5.1
+    build: .
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_WORKER_MEMORY=9g
+      - SPARK_WORKER_CORES=7
+      - GOOGLE_APPLICATION_CREDENTIALS=/opt/credentials/application_default_credentials.json
+    volumes:
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/opt/credentials/application_default_credentials.json
+    extra_hosts:
+      - "host.docker.internal:${HOST_IP}"
+    networks:
+      - flight-delay-pred-network
+    restart: always
+
+networks:
+  flight-delay-pred-network:
+    external: true

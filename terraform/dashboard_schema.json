@@ -1,0 +1,278 @@
+[
+  {
+    "name": "Year",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Year of the flight"
+  },
+  {
+    "name": "Quarter",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Quarter of the year"
+  },
+  {
+    "name": "Month",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Month of the year"
+  },
+  {
+    "name": "DayOfMonth",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Day of the month"
+  },
+  {
+    "name": "DayOfWeek",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Day of the week"
+  },
+  {
+    "name": "FlightDate",
+    "type": "DATE",
+    "mode": "REQUIRED",
+    "description": "Date of the flight"
+  },
+  {
+    "name": "Holiday",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if the flight date is a holiday"
+  },
+  {
+    "name": "AirlineName",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Name of the airline"
+  },
+  {
+    "name": "OriginAirport",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Origin airport code"
+  },
+  {
+    "name": "OriginCity",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "City of the origin airport"
+  },
+  {
+    "name": "OriginState",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "State of the origin airport"
+  },
+  {
+    "name": "DestinationAirport",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Destination airport code"
+  },
+  {
+    "name": "DestinationCity",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "City of the destination airport"
+  },
+  {
+    "name": "DestinationState",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "State of the destination airport"
+  },
+  {
+    "name": "ScheduledDepartureHour",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Hour of the scheduled departure"
+  },
+  {
+    "name": "DepartureDelayed",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if the departure was delayed"
+  },
+  {
+    "name": "DepartureDelayMinutes",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Minutes of departure delay"
+  },
+  {
+    "name": "TaxiInTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Taxi-in time in minutes"
+  },
+  {
+    "name": "TaxiOutTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Taxi-out time in minutes"
+  },
+  {
+    "name": "TotalTaxiTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Total taxi time in minutes"
+  },
+  {
+    "name": "ScheduledElapsedTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Scheduled elapsed flight time in minutes"
+  },
+  {
+    "name": "ActualElapsedTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Actual elapsed flight time in minutes"
+  },
+  {
+    "name": "AirTime",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Time spent in the air in minutes"
+  },
+  {
+    "name": "Cancelled",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if the flight was cancelled"
+  },
+  {
+    "name": "CarrierDelayMinutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Carrier delay in minutes"
+  },
+  {
+    "name": "WeatherDelayMinutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Weather delay in minutes"
+  },
+  {
+    "name": "NASDelayMinutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "National Air System delay in minutes"
+  },
+  {
+    "name": "SecurityDelayMinutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Security delay in minutes"
+  },
+  {
+    "name": "LateAircraftDelayMinutes",
+    "type": "FLOAT",
+    "mode": "NULLABLE",
+    "description": "Late aircraft delay in minutes"
+  },
+  {
+    "name": "DepartureTemperature",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Temperature at departure"
+  },
+  {
+    "name": "DepartureDewPoint",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Dew point at departure"
+  },
+  {
+    "name": "DepartureHumidity",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Humidity at departure"
+  },
+  {
+    "name": "DepartureWindSpeed",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Wind speed at departure"
+  },
+  {
+    "name": "DeparturePrecipitation",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Precipitation at departure"
+  },
+  {
+    "name": "DeparturePressure",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Pressure at departure"
+  },
+  {
+    "name": "DepartureWeatherCondition",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Weather condition at departure"
+  },
+  {
+    "name": "DepartureExtremeWeather",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if extreme weather was present at departure"
+  },
+  {
+    "name": "ArrivalTemperature",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Temperature at arrival"
+  },
+  {
+    "name": "ArrivalDewPoint",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Dew point at arrival"
+  },
+  {
+    "name": "ArrivalHumidity",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Humidity at arrival"
+  },
+  {
+    "name": "ArrivalWindSpeed",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Wind speed at arrival"
+  },
+  {
+    "name": "ArrivalPrecipitation",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Precipitation at arrival"
+  },
+  {
+    "name": "ArrivalPressure",
+    "type": "FLOAT",
+    "mode": "REQUIRED",
+    "description": "Pressure at arrival"
+  },
+  {
+    "name": "ArrivalWeatherCondition",
+    "type": "STRING",
+    "mode": "REQUIRED",
+    "description": "Weather condition at arrival"
+  },
+  {
+    "name": "ArrivalExtremeWeather",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if extreme weather was present at arrival"
+  },
+  {
+    "name": "WeatherDelayed",
+    "type": "INTEGER",
+    "mode": "REQUIRED",
+    "description": "Indicates if the flight was delayed due to weather"
+  }
+]

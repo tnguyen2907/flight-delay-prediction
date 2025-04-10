@@ -1,10 +1,20 @@
 ignore
-ignore*
+**/ignore*
+**/.env
 **/__pycache__/
-**/docker-compose.yaml
+**/data/
+**/clientLibraryConfig-aws-provider.json
+
+# Airflow
+airflow/logs/
+airflow/venv/
+airflow/unittests.cfg
 
 # Terraform
 **/.terraform/*
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+
+#MLflow
+*/mlruns/

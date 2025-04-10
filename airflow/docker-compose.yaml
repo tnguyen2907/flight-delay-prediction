@@ -1,0 +1,38 @@
+services:
+  airflow:
+    build:
+      context: .
+      args:
+        AIRFLOW_ADMIN_USER: ${AIRFLOW_ADMIN_USER:-}
+        AIRFLOW_ADMIN_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:-}
+        AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY:-}
+        GCP_PROJECT_ID: ${GCP_PROJECT_ID:-}
+    container_name: airflow
+    user: "0:0"
+    environment:
+      AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY:-}
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/application_default_credentials.json
+    volumes:
+      - ./logs:/opt/airflow/logs
+      - ./config:/opt/airflow/config
+      - ./plugins:/opt/airflow/plugins
+      - ./dags:/opt/airflow/dags
+      - ../data:/opt/airflow/data
+      - ../spark:/opt/airflow/spark
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-}:/opt/airflow/application_default_credentials.json
+      - ${AIRFLOW_PROJ_DIR:-.}:/sources
+    ports:
+      - "8080:8080"
+    networks:
+      - flight-delay-pred-network
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        airflow webserver --port 8080 & airflow scheduler
+    restart: always
+
+networks:
+  flight-delay-pred-network:
+    external: true
+
