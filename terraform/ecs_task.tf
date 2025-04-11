@@ -19,7 +19,7 @@ resource "null_resource" "build_and_push_image" {
 }
 
 locals {
-  env_vars = {
+  airflow_env_vars = {
     for tuple in regexall("(.*)=(.*)", file(".env")) : tuple[0] => sensitive(tuple[1])
   }
 }
@@ -40,7 +40,7 @@ resource "aws_ecs_task_definition" "ecs_task" {
       essential = true
 
       environment = [
-        for key, value in local.env_vars : {
+        for key, value in local.airflow_env_vars : {
           name  = key
           value = value
         }

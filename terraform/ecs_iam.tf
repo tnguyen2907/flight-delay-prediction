@@ -36,23 +36,6 @@ resource "google_project_iam_member" "aws_ecs_service_account_user" {
   depends_on = [google_service_account.aws_ecs_sa]
 }
 
-resource "google_iam_workload_identity_pool" "aws_ecs_wip" {
-  workload_identity_pool_id = "aws-ecs-wip"
-  display_name = "AWS ECS Workload Identity Pool"
-}
-
-resource "google_iam_workload_identity_pool_provider" "aws_ecs_wip_provider" {
-  workload_identity_pool_id = google_iam_workload_identity_pool.aws_ecs_wip.workload_identity_pool_id
-  workload_identity_pool_provider_id = "aws-provider"
-  display_name = "AWS Provider"
-  description =  "AWS Provider for ECS"
-  
-  aws {
-    account_id = data.aws_caller_identity.current.account_id
-  }
-
-  depends_on = [google_iam_workload_identity_pool.aws_ecs_wip]
-}
 
 resource "aws_iam_role" "ecs_execution_role" {
   name = "aws-ecs-execution-role"
@@ -147,20 +130,20 @@ resource "google_service_account_iam_binding" "aws_ecs_wip_binding" {
   service_account_id = google_service_account.aws_ecs_sa.name
   role = "roles/iam.workloadIdentityUser"
   members = [
-    "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.aws_ecs_wip.name}/attribute.aws_role/arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${aws_iam_role.ecs_task_role.name}"
+    "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.aws_wip.name}/attribute.aws_role/arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${aws_iam_role.ecs_task_role.name}"
   ]
 
-  depends_on = [ aws_iam_role.ecs_task_role, google_service_account.aws_ecs_sa, google_iam_workload_identity_pool.aws_ecs_wip ]
+  depends_on = [ aws_iam_role.ecs_task_role, google_service_account.aws_ecs_sa, google_iam_workload_identity_pool.aws_wip ]
 }
 
 resource "google_service_account_iam_binding" "aws_ecs_satc_binding" {
   service_account_id = google_service_account.aws_ecs_sa.name
   role = "roles/iam.serviceAccountTokenCreator"
   members = [
-    "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.aws_ecs_wip.name}/attribute.aws_role/arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${aws_iam_role.ecs_task_role.name}"
+    "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.aws_wip.name}/attribute.aws_role/arn:aws:sts::${data.aws_caller_identity.current.account_id}:assumed-role/${aws_iam_role.ecs_task_role.name}"
   ]
 
-  depends_on = [ aws_iam_role.ecs_task_role, google_service_account.aws_ecs_sa, google_iam_workload_identity_pool.aws_ecs_wip ]
+  depends_on = [ aws_iam_role.ecs_task_role, google_service_account.aws_ecs_sa, google_iam_workload_identity_pool.aws_wip ]
 }
 
 resource "aws_iam_role" "sf_role" {

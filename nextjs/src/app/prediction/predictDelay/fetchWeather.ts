@@ -138,12 +138,12 @@ const callOpenWeatherMapApi = async (lat: number, lon: number, dt: number): Prom
 
 
   } else {    // DAY_SUMMARY
-    console.log(daySummaryURL);
+    // console.log(daySummaryURL);
     const response = await fetch(
       daySummaryURL,
       {next: { revalidate: 604800}}
     );
-    console.log("Response", response);
+    // console.log("Response", response);
     const curJson = await response.json();
     // console.log("Retrieved JSON", curJson);
 

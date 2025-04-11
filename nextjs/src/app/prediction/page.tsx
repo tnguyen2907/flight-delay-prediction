@@ -1,11 +1,11 @@
 import { unstable_cache } from "next/cache";
 import Form from "./Form"
-import { Storage } from "@google-cloud/storage";
+import { getStorageClient } from "./getStorageClient";
 
 const getAirlines = unstable_cache(
   async (): Promise<string[]> => {
     console.log("getAirlines from GCS bucket");
-    const storage = new Storage();
+    const storage = getStorageClient();
     const bucket = storage.bucket("flight-delay-pred-data");
 
     const airlineFile = bucket.file("app/AirlineName.txt");
@@ -22,6 +22,9 @@ const getAirlines = unstable_cache(
 
 const PredictionPage = async () => {
   const airlines = await getAirlines();
+  console.log(process.env.GCP_PROJECT_ID);
+  console.log(process.env.NODE_ENV);
+  console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   return (
     <div>
       <h1 className="title">Flight Delay Prediction</h1>

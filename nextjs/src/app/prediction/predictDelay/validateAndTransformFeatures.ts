@@ -1,5 +1,5 @@
-import { Storage } from "@google-cloud/storage";
 import { unstable_cache } from "next/cache";
+import { getStorageClient } from "../getStorageClient";
 
 const getAirports = unstable_cache(
   async (): Promise<{
@@ -7,7 +7,7 @@ const getAirports = unstable_cache(
     destAirports: string[];
   }> =>{
     console.log("getAirports from GCS bucket");
-    const storage = new Storage();
+    const storage = getStorageClient();
     const bucket = storage.bucket("flight-delay-pred-data");
 
     const originAirportFile = bucket.file("app/OriginAirport.txt");
@@ -30,7 +30,7 @@ const getAirports = unstable_cache(
 const getAirportCoords = unstable_cache(
   async (): Promise<Record<string, [number, number]>> => {
     console.log("getAirportCoords from GCS bucket");
-    const storage = new Storage();
+    const storage = getStorageClient();
     const bucket = storage.bucket("flight-delay-pred-data");
 
     const airportCoordsFile = bucket.file("raw/airport_coords.csv");
@@ -52,7 +52,7 @@ const getAirportCoords = unstable_cache(
 const getAirportToState = unstable_cache(
   async (): Promise<Record<string, string>> => {
     console.log("getAirportToState from GCS bucket");
-    const storage = new Storage();
+    const storage = getStorageClient();
     const bucket = storage.bucket("flight-delay-pred-data");
 
     const airportToStateFile = bucket.file("app/airport_to_state.json");
