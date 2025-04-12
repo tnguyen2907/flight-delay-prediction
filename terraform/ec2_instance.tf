@@ -30,13 +30,8 @@ resource "aws_instance" "nextjs" {
     ${local.google_application_credentials}
     EOF
     chmod 600 /home/ec2-user/clientLibraryConfig-aws-provider.json
-    chown ec2-user:ec2-user /home/ec2-user/clientLibraryConfig-aws-provider.json
     export GOOGLE_APPLICATION_CREDENTIALS=/home/ec2-user/clientLibraryConfig-aws-provider.json
-
-    echo "GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS"
-
     export GCP_PROJECT_ID=${var.GCP_PROJECT_ID}
-    echo "GCP_PROJECT_ID=$GCP_PROJECT_ID"
 
     # Clone the Next.js repository
     cd /home/ec2-user
@@ -56,7 +51,7 @@ resource "aws_instance" "nextjs" {
     npm run build
 
     # Start the Next.js app
-    sudo nohup npm start -- --port 80 >/home/ec2-user/nextjs.log 2>&1 &
+    nohup npm start -- --port 80 >/home/ec2-user/nextjs.log 2>&1 &
   EOT
 
   depends_on = [aws_security_group.ec2_security_group, aws_iam_instance_profile.ec2_instance_profile]

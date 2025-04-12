@@ -22,9 +22,6 @@ const getAirlines = unstable_cache(
 
 const PredictionPage = async () => {
   const airlines = await getAirlines();
-  console.log(process.env.GCP_PROJECT_ID);
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.GOOGLE_APPLICATION_CREDENTIALS);
   return (
     <div>
       <h1 className="title">Flight Delay Prediction</h1>
