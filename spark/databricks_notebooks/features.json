@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ML Model Input Schema",
+  "type": "object",
+  "properties": {
+    "Quarter": {
+      "type": "integer",
+      "description": "Calendar quarter of the flight date (1 = Jan-Mar, 2 = Apr-Jun, 3 = Jul-Sep, 4 = Oct-Dec)."
+    },
+    "Month": {
+      "type": "integer",
+      "description": "Month of the flight date (1-12)."
+    },
+    "DayOfMonth": {
+      "type": "integer",
+      "description": "Day of the month of the flight date (1-31)."
+    },
+    "DayOfWeek": {
+      "type": "integer",
+      "description": "Day of the week of the flight date"
+    },
+    "AirlineName": {
+      "type": "string",
+      "description": "Full name of the operating airline."
+    },
+    "OriginAirport": {
+      "type": "string",
+      "description": "IATA code of the departure (origin) airport."
+    },
+    "OriginState": {
+      "type": "string",
+      "description": "US state or country code of the departure airport."
+    },
+    "DestinationAirport": {
+      "type": "string",
+      "description": "IATA code of the arrival (destination) airport."
+    },
+    "DestinationState": {
+      "type": "string",
+      "description": "US state of the arrival airport."
+    },
+    "ScheduledDepartureTime": {
+      "type": "integer",
+      "description": "Scheduled local departure time of the flight (HHMM, 24-hour clock)."
+    },
+    "ScheduledArrivalTime": {
+      "type": "integer",
+      "description": "Scheduled local arrival time of the flight (HHMM, 24-hour clock)."
+    },
+    "ScheduledElapsedTime": {
+      "type": "number",
+      "description": "Planned gate-to-gate flight duration in minutes."
+    },
+    "DepartureTemperature": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalTemperature": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureDewPoint": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalDewPoint": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureHumidity": {
+      "type": "number",
+      "description": "Relative humidity (%) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalHumidity": {
+      "type": "number",
+      "description": "Relative humidity (%) at the arrival airport at the scheduled arrival time."
+    },
+    "DeparturePrecipitation": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalPrecipitation": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureWindSpeed": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalWindSpeed": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the arrival airport at the scheduled arrival time."
+    },
+    "DeparturePressure": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalPressure": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureWeatherCondition": {
+      "type": "string",
+      "description": "Categorical weather condition (e.g., Clear, Rain, Snow) at the departure airport at the scheduled departure time."
+    },
+    "ArrivalWeatherCondition": {
+      "type": "string",
+      "description": "Categorical weather condition (e.g., Clear, Rain, Snow) at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureExtremeWeather": {
+      "type": "boolean",
+      "description": "Indicator that extreme weather advisories (e.g., thunderstorms, blizzards) were in effect at the departure airport at the scheduled departure time."
+    },
+    "ArrivalExtremeWeather": {
+      "type": "boolean",
+      "description": "Indicator that extreme weather advisories (e.g., thunderstorms, blizzards) were in effect at the arrival airport at the scheduled arrival time."
+    },
+    "DepartureTemperatureLag1": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalTemperatureLag1": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DepartureTemperatureLead1": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalTemperatureLead1": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DepartureTemperatureLag2": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalTemperatureLag2": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DepartureTemperatureLead2": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalTemperatureLead2": {
+      "type": "number",
+      "description": "Temperature (Celsius) at the arrival airport 2 hours after the scheduled arrival time."
+    },
+    "DepartureDewPointLag1": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalDewPointLag1": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DepartureDewPointLead1": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalDewPointLead1": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DepartureDewPointLag2": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalDewPointLag2": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DepartureDewPointLead2": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalDewPointLead2": {
+      "type": "number",
+      "description": "Dew point temperature (Celsius) at the arrival airport 2 hours after the scheduled arrival time."
+    },
+    "DepartureHumidityLag1": {
+      "type": "number",
+      "description": "Relative humidity (%) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalHumidityLag1": {
+      "type": "number",
+      "description": "Relative humidity (%) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DepartureHumidityLead1": {
+      "type": "number",
+      "description": "Relative humidity (%) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalHumidityLead1": {
+      "type": "number",
+      "description": "Relative humidity (%) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DepartureHumidityLag2": {
+      "type": "number",
+      "description": "Relative humidity (%) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalHumidityLag2": {
+      "type": "number",
+      "description": "Relative humidity (%) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DepartureHumidityLead2": {
+      "type": "number",
+      "description": "Relative humidity (%) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalHumidityLead2": {
+      "type": "number",
+      "description": "Relative humidity (%) at the arrival airport 2 hours after the scheduled arrival time."
+    },
+    "DeparturePrecipitationLag1": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalPrecipitationLag1": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DeparturePrecipitationLead1": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalPrecipitationLead1": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DeparturePrecipitationLag2": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalPrecipitationLag2": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DeparturePrecipitationLead2": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalPrecipitationLead2": {
+      "type": "number",
+      "description": "Precipitation amount (mm) at the arrival airport 2 hours after the scheduled arrival time."
+    },
+    "DepartureWindSpeedLag1": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalWindSpeedLag1": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DepartureWindSpeedLead1": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalWindSpeedLead1": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DepartureWindSpeedLag2": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalWindSpeedLag2": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DepartureWindSpeedLead2": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalWindSpeedLead2": {
+      "type": "number",
+      "description": "Wind speed (m/s) at the arrival airport 2 hours after the scheduled arrival time."
+    },
+    "DeparturePressureLag1": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the departure airport 1 hour before the scheduled departure time."
+    },
+    "ArrivalPressureLag1": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the arrival airport 1 hour before the scheduled arrival time."
+    },
+    "DeparturePressureLead1": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the departure airport 1 hour after the scheduled departure time."
+    },
+    "ArrivalPressureLead1": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the arrival airport 1 hour after the scheduled arrival time."
+    },
+    "DeparturePressureLag2": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the departure airport 2 hours before the scheduled departure time."
+    },
+    "ArrivalPressureLag2": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the arrival airport 2 hours before the scheduled arrival time."
+    },
+    "DeparturePressureLead2": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the departure airport 2 hours after the scheduled departure time."
+    },
+    "ArrivalPressureLead2": {
+      "type": "number",
+      "description": "Sea-level atmospheric pressure (hPa) at the arrival airport 2 hours after the scheduled arrival time."
+    }
+  },
+  "required": [
+    "Quarter",
+    "Month",
+    "DayOfMonth",
+    "DayOfWeek",
+    "AirlineName",
+    "OriginAirport",
+    "OriginState",
+    "DestinationAirport",
+    "DestinationState",
+    "ScheduledDepartureTime",
+    "ScheduledArrivalTime",
+    "ScheduledElapsedTime",
+    "DepartureTemperature",
+    "ArrivalTemperature",
+    "DepartureDewPoint",
+    "ArrivalDewPoint",
+    "DepartureHumidity",
+    "ArrivalHumidity",
+    "DeparturePrecipitation",
+    "ArrivalPrecipitation",
+    "DepartureWindSpeed",
+    "ArrivalWindSpeed",
+    "DeparturePressure",
+    "ArrivalPressure",
+    "DepartureWeatherCondition",
+    "ArrivalWeatherCondition",
+    "DepartureExtremeWeather",
+    "ArrivalExtremeWeather",
+    "DepartureTemperatureLag1",
+    "ArrivalTemperatureLag1",
+    "DepartureTemperatureLead1",
+    "ArrivalTemperatureLead1",
+    "DepartureTemperatureLag2",
+    "ArrivalTemperatureLag2",
+    "DepartureTemperatureLead2",
+    "ArrivalTemperatureLead2",
+    "DepartureDewPointLag1",
+    "ArrivalDewPointLag1",
+    "DepartureDewPointLead1",
+    "ArrivalDewPointLead1",
+    "DepartureDewPointLag2",
+    "ArrivalDewPointLag2",
+    "DepartureDewPointLead2",
+    "ArrivalDewPointLead2",
+    "DepartureHumidityLag1",
+    "ArrivalHumidityLag1",
+    "DepartureHumidityLead1",
+    "ArrivalHumidityLead1",
+    "DepartureHumidityLag2",
+    "ArrivalHumidityLag2",
+    "DepartureHumidityLead2",
+    "ArrivalHumidityLead2",
+    "DeparturePrecipitationLag1",
+    "ArrivalPrecipitationLag1",
+    "DeparturePrecipitationLead1",
+    "ArrivalPrecipitationLead1",
+    "DeparturePrecipitationLag2",
+    "ArrivalPrecipitationLag2",
+    "DeparturePrecipitationLead2",
+    "ArrivalPrecipitationLead2",
+    "DepartureWindSpeedLag1",
+    "ArrivalWindSpeedLag1",
+    "DepartureWindSpeedLead1",
+    "ArrivalWindSpeedLead1",
+    "DepartureWindSpeedLag2",
+    "ArrivalWindSpeedLag2",
+    "DepartureWindSpeedLead2",
+    "ArrivalWindSpeedLead2",
+    "DeparturePressureLag1",
+    "ArrivalPressureLag1",
+    "DeparturePressureLead1",
+    "ArrivalPressureLead1",
+    "DeparturePressureLag2",
+    "ArrivalPressureLag2",
+    "DeparturePressureLead2",
+    "ArrivalPressureLead2"
+  ]
+}

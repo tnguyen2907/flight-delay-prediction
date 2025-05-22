@@ -10,7 +10,7 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
 
 resource "aws_instance" "nextjs" {
   ami                         = "ami-00a929b66ed6e0de6"
-  instance_type               = "t2.micro"
+  instance_type               = "t2.nano"
   subnet_id                   = aws_subnet.public_subnet.id
   vpc_security_group_ids      = [aws_security_group.ec2_security_group.id]
   associate_public_ip_address = true
@@ -50,6 +50,9 @@ resource "aws_instance" "nextjs" {
     npm install
     npm run build
 
+    # Add a delay to ensure network and system services are ready
+    sleep 10
+    
     # Start the Next.js app
     nohup npm start -- --port 80 >/home/ec2-user/nextjs.log 2>&1 &
   EOT

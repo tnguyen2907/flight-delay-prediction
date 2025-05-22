@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Next.js Web Application with Tailwind CSS
 
-## Getting Started
+![NextJS Web Application](../assets/web_app.png)
 
-First, run the development server:
+The web application consists of three main tabs:
+- **Home Page**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Dashboard**: Embeds a Looker Studio dashboard that visualizes key trends and statistics on flight delays, airlines, airports, and weather factors, powered by BigQuery.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Prediction Page**: Allows users to enter flight details and receive real-time delay predictions using a model served through **Databricks Model Serving** via REST API.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Flight Delay Prediction Workflow
 
-## Learn More
+1. **Form Initialization**  
+   Airline and airport options are dynamically loaded from **Google Cloud Storage (GCS)** and cached using Next.js’ `unstable_cache` to reduce latency and avoid redundant fetches.
 
-To learn more about Next.js, take a look at the following resources:
+2. **Input Validation & Feature Transformation**  
+   Upon submission, flight inputs are validated (e.g., valid IATA codes, chronological timestamps). Additional features are derived (e.g., quarter, day of week, elapsed flight time) to match model input requirements.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Fetch Weather Data**  
+   The app calls **OpenWeatherMap** to retrieve real-time weather data for the origin and destination airports at the scheduled times.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. **Model Inference via Databricks**  
+   The final feature set is sent as a JSON payload to **Databricks Model Serving**. The model returns if the flight is likely to be delayed or not.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Performance & Reliability Optimizations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Caching**  
+  Prediction responses and weather data are cached to minimize redundant API calls and improve responsiveness.
+  
+- **Rate Limiting**  
+  A daily request limit is enforced server-side to control API costs
