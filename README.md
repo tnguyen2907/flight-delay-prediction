@@ -2,8 +2,6 @@
 
 US Flight Delay Prediction is a comprehensive data engineering and machine learning project that analyzes 60 million rows of flight data from the U.S. Department of Transportation to predict flight delays and visualize aviation trends. The system integrates historical flight records with real-time weather data to provide accurate delay predictions for upcoming flights.
 
-Live demo: http://ec2-3-231-155-195.compute-1.amazonaws.com/
-
 This repository contains 5 main components:
 1. Apache Airflow Data Pipeline: Automates monthly ingestion and transformation of flight data using Airflow DAGs. Integrates with Google Cloud Storage (GCS), BigQuery, public datasets, and external APIs.
 2. Spark Processing Jobs:
